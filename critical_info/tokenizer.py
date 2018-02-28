@@ -1,6 +1,6 @@
 import nltk
 
-from stemmer import Stemmer
+from .stemmer import Stemmer
 
 
 def tokenize_text(text):

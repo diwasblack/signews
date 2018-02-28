@@ -1,6 +1,7 @@
+import os
 import json
 
-from tokenizer import StemTokenizer
+from .tokenizer import StemTokenizer
 
 
 class CriticalTextDetector():
@@ -9,7 +10,9 @@ class CriticalTextDetector():
     """
 
     def __init__(self):
-        with open("critical_words.json", "r") as file:
+        words_path = os.path.join(os.path.dirname(
+            __file__), "critical_words.json")
+        with open(words_path, "r") as file:
             # Construct a lookup table for keywords
             self.keywords = set(json.load(file))
         self.tokenizer = StemTokenizer()

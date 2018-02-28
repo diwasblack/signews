@@ -8,22 +8,15 @@ from database import Tweet
 from twitter import send_request
 
 
-def process_tweets():
-    with open("data/tweets.json", "r") as file:
-        content = file.read()
-        parsed_json_content = json.loads(content)
+def process_tweets(timeline_json):
+    parsed_json_content = json.loads(timeline_json)
 
-        tweet_file = open("tweets.txt", "w")
+    for tweet_data in parsed_json_content:
+        tweet_text = tweet_data["full_text"]
+        tweet_id = tweet_data["id_str"]
 
-        for tweet_data in parsed_json_content:
-            tweet_text = tweet_data["full_text"]
-            tweet_id = tweet_data["id_str"]
-
-            tweet = Tweet(tweet_id=tweet_id, body=tweet_text)
-            tweet_file.write("{}\n\n".format(tweet_text))
-            tweet.save()
-
-        tweet_file.close()
+        tweet = Tweet(tweet_id=tweet_id, body=tweet_text)
+        tweet.save()
 
 
 def obtain_tweets():

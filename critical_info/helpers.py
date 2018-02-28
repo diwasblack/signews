@@ -1,8 +1,8 @@
 import json
 
-from nltk.stem.snowball import SnowballStemmer
 from sklearn.feature_extraction.text import TfidfVectorizer
 
+from stemmer import Stemmer
 from classifier import CriticalTextDetector
 from database import Tweet
 from twitter import TwitterAPI
@@ -54,7 +54,7 @@ def detect_critical_tweets():
 
 
 def process_words():
-    stemmer = SnowballStemmer("english")
+    stemmer = Stemmer()
 
     with open("critical_words.json", "r") as file:
         words = json.load(file)

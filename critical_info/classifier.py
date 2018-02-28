@@ -1,7 +1,8 @@
 import json
 
 import nltk
-from nltk.stem.snowball import SnowballStemmer
+
+from stemmer import Stemmer
 
 
 class CriticalTextDetector():
@@ -13,7 +14,7 @@ class CriticalTextDetector():
         with open("critical_words.json", "r") as file:
             # Construct a lookup table for keywords
             self.keywords = set(json.load(file))
-        self.stemmer = SnowballStemmer("english")
+        self.stemmer = Stemmer()
 
     def detect(self, text):
         text_data = text.lower()

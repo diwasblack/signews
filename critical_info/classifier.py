@@ -1,8 +1,6 @@
 import json
 
-import nltk
-
-from stemmer import Stemmer
+from tokenizer import StemTokenizer
 
 
 class CriticalTextDetector():
@@ -14,19 +12,14 @@ class CriticalTextDetector():
         with open("critical_words.json", "r") as file:
             # Construct a lookup table for keywords
             self.keywords = set(json.load(file))
-        self.stemmer = Stemmer()
+        self.tokenizer = StemTokenizer()
 
     def detect(self, text):
-        text_data = text.lower()
-        tokens = nltk.word_tokenize(text_data)
+        tokens = self.tokenizer.get_tokens(text)
 
-        count = 0
-        for token in tokens:
-            stemmed_token = self.stemmer.stem(token)
-            if stemmed_token in self.keywords:
-                count += 1
-
-        if count >= 3:
+        # Find out the set intersection
+        common_tokens = self.keywords & set(tokens)
+        if len(common_tokens) >= 3:
             return True
         else:
             return False

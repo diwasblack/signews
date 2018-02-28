@@ -1,14 +1,14 @@
 import peewee
-from peewee import TextField, BooleanField
+from peewee import TextField, BooleanField, CharField
 
 
 db = peewee.SqliteDatabase("database.db")
 
 
 class Tweet(peewee.Model):
-    tweet_id = TextField()
+    tweet_id = CharField(unique=True)
     body = TextField()
-    is_critical = BooleanField()
+    is_critical = BooleanField(default=False)
 
     class Meta:
         database = db

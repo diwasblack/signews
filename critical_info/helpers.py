@@ -8,17 +8,6 @@ from database import Tweet
 from twitter import TwitterAPI
 
 
-def process_tweets(timeline_json):
-    parsed_json_content = json.loads(timeline_json)
-
-    for tweet_data in parsed_json_content:
-        tweet_text = tweet_data["full_text"]
-        tweet_id = tweet_data["id_str"]
-
-        tweet = Tweet(tweet_id=tweet_id, body=tweet_text)
-        tweet.save()
-
-
 def obtain_tweets():
     twitter_api = TwitterAPI()
 
@@ -30,10 +19,23 @@ def obtain_tweets():
         "NYPDCT",
     ]
 
-    screen_names = screen_names[0]
-
     for screen_name in screen_names:
-        response, content = twitter_api.get_user_timeline(screen_name)
+        max_id = None
+        for i in range(5):
+            response, content = twitter_api.get_user_timeline(
+                screen_name, max_id=max_id)
+            parsed_json_content = json.loads(content)
+            for tweet_data in parsed_json_content:
+                tweet_text = tweet_data["full_text"]
+                tweet_id = tweet_data["id_str"]
+
+                try:
+                    tweet = Tweet(tweet_id=tweet_id, body=tweet_text)
+                    tweet.save()
+                except:
+                    pass
+
+            max_id = tweet_data["id"]
 
 
 def detect_critical_tweets():

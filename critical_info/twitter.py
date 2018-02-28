@@ -30,16 +30,19 @@ class TwitterAPI():
 
         return response, content
 
-    def get_user_timeline(self, screen_name):
+    def get_user_timeline(self, screen_name, max_id=None):
         url = "https://api.twitter.com/1.1/statuses/user_timeline.json"
 
         url_parameters = {
             "screen_name": screen_name,
-            "count": "3200",
+            "count": "200",
             "trim_user": "true",
             "exclude_replies": "true",
-            "tweet_mode": "extended"
+            "tweet_mode": "extended",
         }
+
+        if max_id:
+            url_parameters["max_id"] = max_id
 
         url = "{}?{}".format(url, urlencode(url_parameters))
 

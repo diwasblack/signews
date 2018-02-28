@@ -5,7 +5,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 
 from classifier import CriticalTextDetector
 from database import Tweet
-from twitter import send_request
+from twitter import TwitterAPI
 
 
 def process_tweets(timeline_json):
@@ -20,7 +20,7 @@ def process_tweets(timeline_json):
 
 
 def obtain_tweets():
-    BASE_URL = "https://api.twitter.com/1.1/statuses/user_timeline.json?screen_name={}&count={}"
+    twitter_api = TwitterAPI()
 
     screen_names = [
         "nypdnews",
@@ -33,9 +33,7 @@ def obtain_tweets():
     screen_names = screen_names[0]
 
     for screen_name in screen_names:
-        url = BASE_URL.format(screen_name, 3200)
-
-        response, content = send_request(url)
+        response, content = twitter_api.get_user_timeline(screen_name)
 
 
 def detect_critical_tweets():

@@ -3,7 +3,7 @@ import os
 import numpy as np
 from gensim.models import KeyedVectors
 
-from .tokenizer import tokenize_text
+from .tokenizer import TextTokenizer
 
 
 class Doc2Vector():
@@ -17,12 +17,15 @@ class Doc2Vector():
         self.word2vec_model = KeyedVectors.load_word2vec_format(
             word_vectors_file, binary=True)
 
+        # Initialize the tokenizer
+        self.tokenizer = TextTokenizer(filter_stopwords=True)
+
     def get_vector(self, text):
         """
         Return the vector representation for given text
         """
 
-        tokens = tokenize_text(text)
+        tokens = self.tokenizer.tokenize_text(text)
 
         word_vectors = []
 
@@ -36,7 +39,7 @@ class Doc2Vector():
 
         word_vectors = np.array(word_vectors)
 
-        # NOTE explore other ways to combining word vectors
+        # NOTE explore other ways to combine word vectors
         return np.average(word_vectors, axis=0)
 
     def convert_corpus_to_vectors(self, documents):

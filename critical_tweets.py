@@ -1,5 +1,5 @@
-from critical_info.classifier import CriticalTextDetector, CriticalTextClassifier
-from critical_info.database import Tweet
+from crits.classifier import CriticalTextDetector, CriticalTextClassifier
+from crits.database import Tweet
 
 
 def detect_critical_tweets():

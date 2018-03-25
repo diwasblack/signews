@@ -1,5 +1,11 @@
+import logging
+
 from crits.classifier import CriticalTextDetector, CriticalTextClassifier
 from crits.database import Tweet
+
+logging.basicConfig(
+    format='%(asctime)s %(levelname)s %(message)s', level=logging.INFO)
+logger = logging.getLogger(__name__)
 
 
 def detect_critical_tweets():
@@ -18,7 +24,6 @@ def detect_critical_tweets():
 
 
 def train_classifier():
-
     # Obtain the training data
     tweet_objects = Tweet.select(Tweet.body).where(Tweet.is_critical == 1)
     tweets = [tweet.body for tweet in tweet_objects]
@@ -30,7 +35,7 @@ def train_classifier():
     class_label = [classifier.predict(tweet) for tweet in tweets]
     training_accuracy = class_label.count(1) / len(class_label)
 
-    print("Accuracy: {}".format(training_accuracy))
+    logger.info("Accuracy: {}".format(training_accuracy))
 
 
 if __name__ == "__main__":

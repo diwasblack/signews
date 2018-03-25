@@ -1,5 +1,6 @@
 import nltk
 
+
 from .stemmer import Stemmer
 
 
@@ -7,6 +8,7 @@ class TextTokenizer():
 
     def __init__(self, filter_stopwords=False):
         self.filter_stopwords = filter_stopwords
+        self.tokenizer = nltk.tokenize.RegexpTokenizer(r"\w+")
 
         if(self.filter_stopwords):
             self.filter_stopwords
@@ -14,7 +16,7 @@ class TextTokenizer():
 
     def tokenize_text(self, text):
         text_data = text.lower()
-        tokens = nltk.word_tokenize(text_data)
+        tokens = self.tokenizer.tokenize(text_data)
 
         if(self.filter_stopwords):
             tokens = [

@@ -81,7 +81,9 @@ class TFIDF():
         """
         Return the TF-IDF vector representation of given text
         """
-        return self.tf_idf.transform([text])
+        sparse_matrix = self.tf_idf.transform([text])
+        return sparse_matrix.toarray()
 
     def convert_corpus_to_vectors(self, documents):
-        return self.tf_idf.transform(documents)
+        training_sparse_matrix = self.tf_idf.transform(documents)
+        return training_sparse_matrix.toarray()

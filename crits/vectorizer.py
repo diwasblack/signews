@@ -1,7 +1,9 @@
 import os
+import pickle
 
 import numpy as np
 from gensim.models import KeyedVectors
+from sklearn.feature_extraction.text import TfidfVectorizer
 
 from .tokenizer import TextTokenizer
 
@@ -45,3 +47,41 @@ class Doc2Vector():
     def convert_corpus_to_vectors(self, documents):
         document_vectors = [self.get_vector(doc) for doc in documents]
         return np.array(document_vectors)
+
+
+class TFIDF():
+    """
+    Vectorize a given text using TF-IDF
+    """
+
+    def __init__(self):
+        # Initialize the tokenizer
+        self.tokenizer = TextTokenizer()
+
+        self.tf_idf_model_path = os.path.join(os.path.dirname(__file__),
+                                              "tf_idf.pkl")
+
+        if(os.path.exists(self.tf_idf_model_path)):
+            with open(self.tf_idf_model_path, "rb") as file:
+                self.tf_idf = pickle.load(file)
+        else:
+            self.tf_idf = TfidfVectorizer(max_features=1000)
+
+    def calculate_idf(self, corpus):
+        """
+        Calculate and store the IDF vectors
+        """
+
+        self.tf_idf.fit(corpus)
+
+        with open(self.tf_idf_model_path, "wb") as file:
+            pickle.dump(self.tf_idf, file)
+
+    def get_vector(self, text):
+        """
+        Return the TF-IDF vector representation of given text
+        """
+        return self.tf_idf.transform([text])
+
+    def convert_corpus_to_vectors(self, documents):
+        return self.tf_idf.transform(documents)

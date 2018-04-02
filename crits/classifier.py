@@ -37,7 +37,7 @@ class CriticalTextClassifier():
     Classifier for critical text
     """
 
-    def __init__(self, vectorizer=None):
+    def __init__(self, vectorizer=None, nu=None):
         # Use Doc2Vector as default vectorizer
         if not(vectorizer):
             logging.info("Loading word2vec model from binary file")
@@ -45,7 +45,8 @@ class CriticalTextClassifier():
         else:
             self.vectorizer = vectorizer
 
-        self.classifier = OneClassSVM()
+        if(not(nu)):
+            self.classifier = OneClassSVM(nu=0.2)
 
     def fit(self, training_data):
         training_vectors = self.vectorizer.convert_corpus_to_vectors(

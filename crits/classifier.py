@@ -58,4 +58,4 @@ class CriticalTextClassifier():
     def predict(self, text):
         document_vector = self.vectorizer.get_vector(text)
 
-        return self.classifier.predict(document_vector.reshape(1, -1))
+        return self.classifier.predict(document_vector.reshape(1, -1))[0]

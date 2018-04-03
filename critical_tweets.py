@@ -1,4 +1,7 @@
 import logging
+import random
+
+from sklearn.metrics import precision_recall_fscore_support
 
 from crits.classifier import CriticalTextDetector, CriticalTextClassifier
 from crits.database import Tweet
@@ -32,10 +35,16 @@ def train_classifier():
     classifier = CriticalTextClassifier()
     classifier.fit(tweets)
 
-    class_label = [classifier.predict(tweet) for tweet in tweets]
-    training_accuracy = class_label.count(1) / len(class_label)
+    test_tweets_objects = Tweet.select(Tweet.body, Tweet.is_critical)
+    random_tweets = random.sample([(tweet.body, tweet.is_critical)
+                                   for tweet in test_tweets_objects], 2000)
 
-    logger.info("Accuracy: {}".format(training_accuracy))
+    test_tweets, labels = zip(*random_tweets)
+    label_vectors = [1 if x else -1 for x in labels]
+
+    predicted_class_labels = [
+        classifier.predict(tweet) for tweet in test_tweets]
+    print(precision_recall_fscore_support(label_vectors, predicted_class_labels))
 
 
 if __name__ == "__main__":

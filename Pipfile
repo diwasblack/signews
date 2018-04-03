@@ -1,12 +1,9 @@
 [[source]]
-
 url = "https://pypi.python.org/simple"
 verify_ssl = true
 name = "pypi"
 
-
 [packages]
-
 requests = "==2.18.4"
 "oauth2" = "==1.9.0.post1"
 peewee = "==3.1.0"
@@ -23,7 +20,6 @@ numpy = "==1.14.1"
 scikit-learn = "==0.19.1"
 scipy = "==1.0.0"
 "urllib3" = "==1.22"
-
+six = "==1.11.0"
 
 [dev-packages]
-

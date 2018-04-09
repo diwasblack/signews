@@ -28,11 +28,11 @@ def detect_critical_tweets():
 
 def train_classifier():
     # Obtain the training data
-    tweet_objects = Tweet.select(Tweet.body).where(Tweet.is_critical == 1)
+    tweet_objects = Tweet.select(Tweet.body).where(Tweet.is_critical)
     tweets = [tweet.body for tweet in tweet_objects]
 
     # Initialize classifier
-    classifier = CriticalTextClassifier()
+    classifier = CriticalTextClassifier(vectorizer="tfidf")
     classifier.fit(tweets)
 
     test_tweets_objects = Tweet.select(Tweet.body, Tweet.is_critical)

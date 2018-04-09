@@ -5,7 +5,7 @@ import logging
 from sklearn.svm import OneClassSVM
 
 from .tokenizer import StemTokenizer
-from .vectorizer import Doc2Vector
+from .vectorizer import Doc2Vector, TFIDF
 
 
 class CriticalTextDetector():
@@ -37,13 +37,13 @@ class CriticalTextClassifier():
     Classifier for critical text
     """
 
-    def __init__(self, vectorizer=None):
+    def __init__(self, vectorizer="word2vec"):
         # Use Doc2Vector as default vectorizer
-        if not(vectorizer):
+        if(vectorizer == "word2vec"):
             logging.info("Loading word2vec model from binary file")
             self.vectorizer = Doc2Vector()
-        else:
-            self.vectorizer = vectorizer
+        elif(vectorizer == "tfidf"):
+            self.vectorizer = TFIDF()
 
         self.classifier = OneClassSVM()
 

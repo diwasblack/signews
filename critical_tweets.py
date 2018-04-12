@@ -6,10 +6,6 @@ from sklearn.metrics import precision_recall_fscore_support
 from crits.classifier import CriticalTextDetector, CriticalTextClassifier
 from crits.database import Tweet
 
-logging.basicConfig(
-    format='%(asctime)s %(levelname)s %(message)s', level=logging.INFO)
-logger = logging.getLogger(__name__)
-
 
 def detect_critical_tweets():
     critical_text_detector = CriticalTextDetector()
@@ -27,6 +23,10 @@ def detect_critical_tweets():
 
 
 def train_classifier():
+    logging.basicConfig(
+        format='%(asctime)s %(levelname)s %(message)s', level=logging.INFO)
+    logger = logging.getLogger(__name__)
+
     # Obtain the training data
     tweet_objects = Tweet.select(Tweet.body).where(Tweet.is_critical)
     tweets = [tweet.body for tweet in tweet_objects]
@@ -44,7 +44,8 @@ def train_classifier():
 
     predicted_class_labels = [
         classifier.predict(tweet) for tweet in test_tweets]
-    print(precision_recall_fscore_support(label_vectors, predicted_class_labels))
+    logger.info(precision_recall_fscore_support(
+        label_vectors, predicted_class_labels))
 
 
 if __name__ == "__main__":

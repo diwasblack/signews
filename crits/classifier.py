@@ -44,6 +44,7 @@ class CriticalTextClassifier():
             self.vectorizer = Doc2Vector()
         elif(vectorizer == "tfidf"):
             self.vectorizer = TFIDF()
+            self.vectorizer.load_idf_values()
 
         self.classifier = OneClassSVM(nu=nu)
 

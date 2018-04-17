@@ -1,8 +1,14 @@
+import os
+
 import peewee
 from peewee import TextField, BooleanField, CharField
 
 
-db = peewee.SqliteDatabase("database.db")
+database_path = os.path.join(
+    os.path.dirname(__file__),
+    "database.db"
+)
+db = peewee.SqliteDatabase(database_path)
 
 
 class Tweet(peewee.Model):

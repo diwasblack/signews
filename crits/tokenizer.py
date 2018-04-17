@@ -1,14 +1,16 @@
-import nltk
+import string
 
+import nltk
 
 from .stemmer import Stemmer
 
 
 class TextTokenizer():
-
     def __init__(self, filter_stopwords=False):
+
         self.filter_stopwords = filter_stopwords
-        self.tokenizer = nltk.tokenize.RegexpTokenizer(r"\w+")
+        self.character_filter = str.maketrans("", "", string.punctuation)
+        self.tokenizer = nltk.tokenize.RegexpTokenizer(r"[a-zA-Z]+")
 
         if(self.filter_stopwords):
             self.filter_stopwords
@@ -16,6 +18,7 @@ class TextTokenizer():
 
     def tokenize_text(self, text):
         text_data = text.lower()
+        text_data = text_data.translate(self.character_filter)
         tokens = self.tokenizer.tokenize(text_data)
 
         if(self.filter_stopwords):

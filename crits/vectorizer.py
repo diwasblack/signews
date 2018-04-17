@@ -65,7 +65,8 @@ class TFIDF():
             with open(self.tf_idf_model_path, "rb") as file:
                 self.tf_idf = pickle.load(file)
         else:
-            self.tf_idf = TfidfVectorizer(max_features=1000)
+            self.tf_idf = TfidfVectorizer(
+                max_features=1000, tokenizer=self.tokenizer.tokenize_text)
 
     def calculate_idf(self, corpus):
         """

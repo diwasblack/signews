@@ -87,3 +87,14 @@ class TFIDF():
     def convert_corpus_to_vectors(self, documents):
         training_sparse_matrix = self.tf_idf.transform(documents)
         return training_sparse_matrix.toarray()
+
+    def get_words_idf(self):
+        """
+        Return a sorted list of words and their respective IDF values
+        """
+
+        words = self.tf_idf.vocabulary_
+        idfs = self.tf_idf.idf_
+
+        word_idf_list = [(k, idfs[v]) for k, v in words.items()]
+        return sorted(word_idf_list, key=lambda x: x[1], reverse=True)

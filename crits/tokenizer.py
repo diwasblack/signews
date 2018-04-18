@@ -1,3 +1,4 @@
+import re
 import string
 
 import nltk
@@ -10,6 +11,9 @@ class TextTokenizer():
         self.character_filter = str.maketrans("", "", string.punctuation)
         self.tokenizer = nltk.tokenize.RegexpTokenizer(r"[a-zA-Z]+")
 
+        # Regex for removing urls
+        self.url_regex = re.compile('https?:\/\/\S*')
+
         self.filter_stopwords = filter_stopwords
 
         if(self.filter_stopwords):
@@ -17,6 +21,8 @@ class TextTokenizer():
 
     def tokenize_text(self, text):
         text_data = text.lower()
+        text_data = re.sub(self.url_regex, "", text_data)
+
         text_data = text_data.translate(self.character_filter)
         tokens = self.tokenizer.tokenize(text_data)
 

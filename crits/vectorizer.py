@@ -1,5 +1,6 @@
 import os
 import pickle
+import json
 
 import numpy as np
 from gensim.models import KeyedVectors
@@ -57,17 +58,29 @@ class TFIDF():
     Vectorize a given text using TF-IDF
     """
 
-    def __init__(self):
+    def __init__(self, use_fixed_vocab=False):
         # Initialize the tokenizer
         self.tokenizer = TextTokenizer()
 
-        self.tf_idf_model_path = os.path.join(os.path.dirname(__file__),
-                                              "tf_idf.pkl")
+        file_path = os.path.dirname(__file__)
+
+        self.tf_idf_model_path = os.path.join(file_path, "tf_idf.pkl")
+
         self.tf_idf = TfidfVectorizer(
             tokenizer=self.tokenizer.tokenize_text,
             max_features=1000,
-            max_df=0.4
+            max_df=0.4,
+            min_df=5
         )
+
+        if(use_fixed_vocab):
+            vocabulary_file_path = os.path.join(file_path, "vocabulary.json")
+            vocab_file = open(vocabulary_file_path, "r")
+            self.tf_idf = TfidfVectorizer(
+                tokenizer=self.tokenizer.tokenize_text,
+                vocabulary=json.load(vocab_file)
+            )
+            vocab_file.close()
 
     def load_idf_values(self):
         if(not(os.path.exists(self.tf_idf_model_path))):

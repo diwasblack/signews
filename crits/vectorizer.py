@@ -65,6 +65,7 @@ class TFIDF():
         file_path = os.path.dirname(__file__)
 
         self.tf_idf_model_path = os.path.join(file_path, "tf_idf.pkl")
+        self.vocabulary_file_path = os.path.join(file_path, "vocabulary.json")
 
         self.tf_idf = TfidfVectorizer(
             tokenizer=self.tokenizer.tokenize_text,
@@ -74,8 +75,7 @@ class TFIDF():
         )
 
         if(use_fixed_vocab):
-            vocabulary_file_path = os.path.join(file_path, "vocabulary.json")
-            vocab_file = open(vocabulary_file_path, "r")
+            vocab_file = open(self.vocabulary_file_path, "r")
             self.tf_idf = TfidfVectorizer(
                 tokenizer=self.tokenizer.tokenize_text,
                 vocabulary=json.load(vocab_file)
@@ -119,3 +119,13 @@ class TFIDF():
 
         word_idf_list = [(k, idfs[v]) for k, v in words.items()]
         return sorted(word_idf_list, key=lambda x: x[1], reverse=True)
+
+    def store_vocabulary(self):
+        """
+        Store the words list in a json file
+        """
+
+        words = list(self.tf_idf.vocabulary_.keys())
+
+        with open(self.vocabulary_file_path, "w") as file:
+            json.dump(words, file)

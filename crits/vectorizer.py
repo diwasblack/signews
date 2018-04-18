@@ -22,6 +22,8 @@ class Doc2Vector():
         # Initialize the tokenizer
         self.tokenizer = TextTokenizer(filter_stopwords=True)
 
+        self.vector_length = self.word2vec_model.wv.vectors.shape[1]
+
     def get_vector(self, text):
         """
         Return the vector representation for given text
@@ -35,7 +37,8 @@ class Doc2Vector():
             try:
                 word_vector = self.word2vec_model.wv[token]
             except:
-                continue
+                # NOTE a vector of zeros may not be the best choice
+                word_vector = np.zeros(self.vector_length)
 
             word_vectors.append(word_vector)
 

@@ -61,7 +61,10 @@ class TFIDF():
         self.tf_idf_model_path = os.path.join(os.path.dirname(__file__),
                                               "tf_idf.pkl")
         self.tf_idf = TfidfVectorizer(
-            max_features=1000, tokenizer=self.tokenizer.tokenize_text)
+            tokenizer=self.tokenizer.tokenize_text,
+            max_features=1000,
+            max_df=0.4
+        )
 
     def load_idf_values(self):
         if(not(os.path.exists(self.tf_idf_model_path))):

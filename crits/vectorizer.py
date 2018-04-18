@@ -69,9 +69,7 @@ class TFIDF():
 
         self.tf_idf = TfidfVectorizer(
             tokenizer=self.tokenizer.tokenize_text,
-            max_features=1000,
-            max_df=0.4,
-            min_df=5
+            max_features=1000
         )
 
         if(use_fixed_vocab):

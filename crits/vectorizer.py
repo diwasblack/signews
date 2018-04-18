@@ -6,7 +6,7 @@ import numpy as np
 from gensim.models import KeyedVectors
 from sklearn.feature_extraction.text import TfidfVectorizer
 
-from .tokenizer import TextTokenizer
+from .tokenizer import TextTokenizer, StemTokenizer
 
 
 class Doc2Vector():
@@ -60,7 +60,7 @@ class TFIDF():
 
     def __init__(self, use_fixed_vocab=False):
         # Initialize the tokenizer
-        self.tokenizer = TextTokenizer()
+        self.tokenizer = StemTokenizer(filter_stopwords=True)
 
         file_path = os.path.dirname(__file__)
 

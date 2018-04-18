@@ -7,13 +7,12 @@ from .stemmer import Stemmer
 
 class TextTokenizer():
     def __init__(self, filter_stopwords=False):
-
-        self.filter_stopwords = filter_stopwords
         self.character_filter = str.maketrans("", "", string.punctuation)
         self.tokenizer = nltk.tokenize.RegexpTokenizer(r"[a-zA-Z]+")
 
+        self.filter_stopwords = filter_stopwords
+
         if(self.filter_stopwords):
-            self.filter_stopwords
             self.stopwords = set(nltk.corpus.stopwords.words("english"))
 
     def tokenize_text(self, text):
@@ -28,16 +27,16 @@ class TextTokenizer():
         return tokens
 
 
-class StemTokenizer():
+class StemTokenizer(TextTokenizer):
     """
     Class to tokenize the given text and return the stems
     """
 
     def __init__(self, filter_stopwords=False):
+        super().__init__(filter_stopwords=filter_stopwords)
         self.stemmer = Stemmer()
-        self.tokenizer = TextTokenizer(filter_stopwords)
 
-    def get_tokens(self, text):
-        tokens = self.tokenizer.tokenize_text(text)
+    def tokenize_text(self, text):
+        tokens = super().tokenize_text(text)
         stems = [self.stemmer.stem(token) for token in tokens]
         return stems

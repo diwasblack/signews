@@ -2,7 +2,7 @@ from sklearn.manifold import TSNE
 
 import matplotlib.pyplot as plt
 
-from crits.vectorizer import Doc2Vector
+from crits.vectorizer import TFIDF
 from crits.database import Tweet
 
 
@@ -15,7 +15,8 @@ def visualize_data():
     tweets, labels = list(zip(*tweets_and_labels))
 
     print("Initializing vectorizer")
-    vectorizer = Doc2Vector()
+    vectorizer = TFIDF()
+    vectorizer.load_idf_values()
     tsne_object = TSNE()
 
     training_vectors = vectorizer.convert_corpus_to_vectors(

@@ -1,3 +1,5 @@
+import logging
+
 from sklearn.manifold import TSNE
 
 import matplotlib.pyplot as plt
@@ -14,7 +16,7 @@ def visualize_data():
 
     tweets, labels = list(zip(*tweets_and_labels))
 
-    print("Initializing vectorizer")
+    logging.info("Initializing vectorizer")
     vectorizer = TFIDF()
     vectorizer.load_idf_values()
     tsne_object = TSNE()
@@ -39,4 +41,7 @@ def visualize_data():
 
 
 if __name__ == "__main__":
+    logging.basicConfig(
+        format='%(asctime)s %(levelname)s %(message)s', level=logging.INFO)
+    logger = logging.getLogger(__name__)
     visualize_data()

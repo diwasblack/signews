@@ -21,7 +21,7 @@ class Doc2Vector():
             word_vectors_file, binary=True)
 
         # Initialize the tokenizer
-        self.tokenizer = TextTokenizer(filter_stopwords=True)
+        self.tokenizer = TextTokenizer(filter_words=True)
 
         self.vector_length = self.word2vec_model.wv.vectors.shape[1]
 
@@ -60,7 +60,7 @@ class TFIDF():
 
     def __init__(self):
         # Initialize the tokenizer
-        self.tokenizer = StemTokenizer(filter_stopwords=True)
+        self.tokenizer = StemTokenizer(filter_words=True)
 
         file_path = os.path.dirname(__file__)
 

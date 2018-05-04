@@ -58,7 +58,7 @@ class TFIDF():
     Vectorize a given text using TF-IDF
     """
 
-    def __init__(self, use_fixed_vocab=False):
+    def __init__(self):
         # Initialize the tokenizer
         self.tokenizer = StemTokenizer(filter_stopwords=True)
 
@@ -67,18 +67,9 @@ class TFIDF():
         self.tf_idf_model_path = os.path.join(file_path, "tf_idf.pkl")
         self.vocabulary_file_path = os.path.join(file_path, "vocabulary.json")
 
-        self.tf_idf = TfidfVectorizer(
-            tokenizer=self.tokenizer.tokenize_text,
-            max_features=1000
-        )
+        self.tf_idf = None
 
-        if(use_fixed_vocab):
-            vocab_file = open(self.vocabulary_file_path, "r")
-            self.tf_idf = TfidfVectorizer(
-                tokenizer=self.tokenizer.tokenize_text,
-                vocabulary=json.load(vocab_file)
-            )
-            vocab_file.close()
+        self.max_features = 1000
 
     def load_idf_values(self):
         if(not(os.path.exists(self.tf_idf_model_path))):
@@ -86,10 +77,22 @@ class TFIDF():
         with open(self.tf_idf_model_path, "rb") as file:
             self.tf_idf = pickle.load(file)
 
-    def calculate_idf(self, corpus):
+    def calculate_idf(self, corpus, use_fixed_vocab=False):
         """
         Calculate and store the IDF vectors
         """
+
+        if(use_fixed_vocab):
+            with open(self.vocabulary_file_path, "r") as vocab_file:
+                self.tf_idf = TfidfVectorizer(
+                    tokenizer=self.tokenizer.tokenize_text,
+                    vocabulary=json.load(vocab_file)
+                )
+        else:
+            self.tf_idf = TfidfVectorizer(
+                tokenizer=self.tokenizer.tokenize_text,
+                max_features=self.max_features
+            )
 
         self.tf_idf.fit(corpus)
 

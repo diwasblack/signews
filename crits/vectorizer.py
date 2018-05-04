@@ -121,6 +121,22 @@ class TFIDF():
         word_idf_list = [(k, idfs[v]) for k, v in words.items()]
         return sorted(word_idf_list, key=lambda x: x[1], reverse=True)
 
+    def save_word_idf(self):
+        """
+        Save word and it's corresponding IDF value in a file
+        """
+
+        word_idf_list = self.get_words_idf()
+
+        word_idf_file = os.path.join(
+            os.path.dirname(__file__),
+            "idf_values.txt"
+        )
+
+        with open(word_idf_file, "w") as file:
+            for word, idf in word_idf_list:
+                file.write("{},{}\n".format(word, idf))
+
     def store_vocabulary(self):
         """
         Store the words list in a json file

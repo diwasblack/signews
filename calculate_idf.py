@@ -11,14 +11,8 @@ def calculate_idf():
     tf_idf_vectorizer = TFIDF()
     tf_idf_vectorizer.calculate_idf(tweets)
 
-    # Store the vocabulary in a file
-    tf_idf_vectorizer.store_vocabulary()
-
-    word_idf_list = tf_idf_vectorizer.get_words_idf()
-
-    with open("idf.txt", "w") as file:
-        for word, idf in word_idf_list:
-            file.write("{},{}\n".format(word, idf))
+    # Store the word and it's IDF value in a file
+    tf_idf_vectorizer.save_word_idf()
 
 
 if __name__ == "__main__":

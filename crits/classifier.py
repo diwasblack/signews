@@ -22,7 +22,7 @@ class CriticalTextDetector():
         self.tokenizer = StemTokenizer()
 
     def detect(self, text):
-        tokens = self.tokenizer.get_tokens(text)
+        tokens = self.tokenizer.tokenize_text(text)
 
         # Find out the set intersection
         common_tokens = self.keywords & set(tokens)

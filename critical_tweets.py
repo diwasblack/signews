@@ -8,6 +8,7 @@ from crits.database import Tweet
 
 
 def detect_critical_tweets():
+    logging.info("Labelling tweets using critical words")
     critical_text_detector = CriticalTextDetector()
 
     # Obtain all tweets
@@ -23,9 +24,6 @@ def detect_critical_tweets():
 
 
 def train_classifier():
-    logging.basicConfig(
-        format='%(asctime)s %(levelname)s %(message)s', level=logging.INFO)
-    logger = logging.getLogger(__name__)
 
     # Obtain the training data
     tweet_objects = Tweet.select(Tweet.body).where(Tweet.is_critical)
@@ -44,7 +42,7 @@ def train_classifier():
 
     predicted_class_labels = [
         classifier.predict(tweet) for tweet in test_tweets]
-    logger.info(precision_recall_fscore_support(
+    logging.info(precision_recall_fscore_support(
         label_vectors, predicted_class_labels))
 
     fn_file_path = open("false_negative.txt", "w")
@@ -61,4 +59,8 @@ def train_classifier():
 
 
 if __name__ == "__main__":
+    logging.basicConfig(
+        format='%(asctime)s %(levelname)s %(message)s', level=logging.INFO)
+    logger = logging.getLogger(__name__)
+    detect_critical_tweets()
     train_classifier()

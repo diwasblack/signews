@@ -26,7 +26,7 @@ class CriticalTextDetector():
 
         # Find out the set intersection
         common_tokens = self.keywords & set(tokens)
-        if len(common_tokens) >= 3:
+        if len(common_tokens) >= 2:
             return True
         else:
             return False

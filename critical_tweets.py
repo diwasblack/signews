@@ -24,7 +24,6 @@ def detect_critical_tweets():
 
 
 def train_classifier():
-
     # Obtain the training data
     tweet_objects = Tweet.select(Tweet.body).where(Tweet.is_critical)
     tweets = [tweet.body for tweet in tweet_objects]

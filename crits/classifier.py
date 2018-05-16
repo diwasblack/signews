@@ -35,6 +35,8 @@ class CriticalTextDetector():
 class CriticalTextClassifier():
     """
     Classifier for critical text
+
+    Labels critical text as 1 and non critical news as -1
     """
 
     def __init__(self, vectorizer="word2vec", nu=0.1):

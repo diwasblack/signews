@@ -1,42 +1,49 @@
 import logging
-import random
 
 from sklearn.metrics import precision_recall_fscore_support
+from sklearn.model_selection import train_test_split
 
 from crits.classifier import CriticalTextClassifier
-from crits.database import Tweet
 from crits.dataset import CriticalTextDataset
 
 
 def train_classifier():
-    # Obtain the training data
+    # Load the critical text dataset
     criticaltext_dataset = CriticalTextDataset()
-    tweets = criticaltext_dataset.load_dataset()
+    tweets, labels = criticaltext_dataset.load_dataset()
+
+    x_train, x_test, y_train, y_test = train_test_split(
+        tweets,
+        labels,
+        test_size=0.33
+    )
+
+    critical_texts = [
+        x[0]
+        for x in zip(x_train, y_train)
+        if x[1] == 1
+    ]
 
     # Initialize classifier
     classifier = CriticalTextClassifier(vectorizer="tfidf")
-    classifier.fit(tweets)
-
-    test_tweets_objects = Tweet.select(Tweet.body, Tweet.is_critical)
-    random_tweets = random.sample([(tweet.body, tweet.is_critical)
-                                   for tweet in test_tweets_objects], 2000)
-
-    test_tweets, labels = zip(*random_tweets)
-    label_vectors = [1 if x else -1 for x in labels]
+    classifier.fit(critical_texts)
 
     predicted_class_labels = [
-        classifier.predict(tweet) for tweet in test_tweets]
+        classifier.predict(tweet) for tweet in x_test]
+    predicted_class_labels = [
+        1 if x == 1 else 0 for x in predicted_class_labels]
+
     logging.info(precision_recall_fscore_support(
-        label_vectors, predicted_class_labels))
+        y_test, predicted_class_labels))
 
     fn_file_path = open("false_negative.txt", "w")
     fp_file_path = open("false_positive.txt", "w")
 
-    for index, value in enumerate(label_vectors):
-        if value == 1 and predicted_class_labels[index] == -1:
-            fn_file_path.write("{}\n\n".format(random_tweets[index][0]))
-        if value == -1 and predicted_class_labels[index] == 1:
-            fp_file_path.write("{}\n\n".format(random_tweets[index][0]))
+    for index, value in enumerate(y_test):
+        if value == 1 and predicted_class_labels[index] == 0:
+            fn_file_path.write("{}\n\n".format(x_test[index]))
+        if value == 0 and predicted_class_labels[index] == 1:
+            fp_file_path.write("{}\n\n".format(x_test[index]))
 
     fn_file_path.close()
     fp_file_path.close()

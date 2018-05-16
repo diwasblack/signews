@@ -10,7 +10,7 @@ class CriticalTextDataset():
     def __init__(self):
         self.dataset_path = os.path.join(
             os.path.dirname(__file__),
-            "criticaltext_dataset.pkl"
+            "dataset.pkl"
         )
 
     def load_dataset(self):

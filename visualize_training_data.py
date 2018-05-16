@@ -5,16 +5,12 @@ from sklearn.manifold import TSNE
 import matplotlib.pyplot as plt
 
 from crits.vectorizer import TFIDF
-from crits.database import Tweet
+from crits.dataset import CriticalTextDataset
 
 
 def visualize_data():
-    # Obtain the training data
-    tweet_objects = Tweet.select(Tweet.body, Tweet.is_critical)
-    tweets_and_labels = [(tweet.body, tweet.is_critical)
-                         for tweet in tweet_objects][:2000]
-
-    tweets, labels = list(zip(*tweets_and_labels))
+    criticaltext_dataset = CriticalTextDataset()
+    tweets, labels = criticaltext_dataset.load_dataset()
 
     logging.info("Initializing vectorizer")
     vectorizer = TFIDF()

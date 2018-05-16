@@ -13,10 +13,6 @@ class CriticalTextDataset():
             "criticaltext_dataset.pkl"
         )
 
-    def save_dataset(self, corpus):
-        with open(self.dataset_path, "wb") as file:
-            pickle.dump(corpus, file)
-
     def load_dataset(self):
         with open(self.dataset_path, "rb") as file:
             return pickle.load(file)

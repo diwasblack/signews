@@ -3,30 +3,15 @@ import random
 
 from sklearn.metrics import precision_recall_fscore_support
 
-from crits.classifier import CriticalTextDetector, CriticalTextClassifier
+from crits.classifier import CriticalTextClassifier
 from crits.database import Tweet
-
-
-def detect_critical_tweets():
-    logging.info("Labelling tweets using critical words")
-    critical_text_detector = CriticalTextDetector()
-
-    # Obtain all tweets
-    tweets = Tweet.select()
-
-    for tweet in tweets:
-        if(critical_text_detector.detect(tweet.body)):
-            tweet.is_critical = 1
-        else:
-            tweet.is_critical = 0
-
-        tweet.save()
+from crits.dataset import CriticalTextDataset
 
 
 def train_classifier():
     # Obtain the training data
-    tweet_objects = Tweet.select(Tweet.body).where(Tweet.is_critical)
-    tweets = [tweet.body for tweet in tweet_objects]
+    criticaltext_dataset = CriticalTextDataset()
+    tweets = criticaltext_dataset.load_dataset()
 
     # Initialize classifier
     classifier = CriticalTextClassifier(vectorizer="tfidf")
@@ -61,5 +46,4 @@ if __name__ == "__main__":
     logging.basicConfig(
         format='%(asctime)s %(levelname)s %(message)s', level=logging.INFO)
     logger = logging.getLogger(__name__)
-    detect_critical_tweets()
     train_classifier()

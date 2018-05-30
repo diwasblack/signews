@@ -33,9 +33,9 @@ def train_classifier():
 
     for index, value in enumerate(y_test):
         if value == 1 and predicted_class_labels[index] == 0:
-            fn_file_path.write("{}\n\n".format(x_test[index]))
+            fn_file_path.write("{}\n$$end$$\n".format(x_test[index]))
         if value == 0 and predicted_class_labels[index] == 1:
-            fp_file_path.write("{}\n\n".format(x_test[index]))
+            fp_file_path.write("{}\n$$end$$\n".format(x_test[index]))
 
     fn_file_path.close()
     fp_file_path.close()
@@ -43,6 +43,7 @@ def train_classifier():
 
 if __name__ == "__main__":
     logging.basicConfig(
-        format='%(asctime)s %(levelname)s %(message)s', level=logging.INFO)
+        format='%(asctime)s %(levelname)s %(message)s', level=logging.INFO,
+        filename="classifier.log")
     logger = logging.getLogger(__name__)
     train_classifier()

@@ -18,20 +18,12 @@ def train_classifier():
         test_size=0.33
     )
 
-    critical_texts = [
-        x[0]
-        for x in zip(x_train, y_train)
-        if x[1] == 1
-    ]
-
     # Initialize classifier
     classifier = CriticalTextClassifier(vectorizer="tfidf")
-    classifier.fit(critical_texts)
+    classifier.fit(x_train, y_train)
 
     predicted_class_labels = [
         classifier.predict(tweet) for tweet in x_test]
-    predicted_class_labels = [
-        1 if x == 1 else 0 for x in predicted_class_labels]
 
     logging.info(precision_recall_fscore_support(
         y_test, predicted_class_labels))

@@ -2,7 +2,7 @@ import os
 import json
 import logging
 
-from sklearn.svm import OneClassSVM
+from sklearn.svm import SVC
 
 from .tokenizer import StemTokenizer
 from .vectorizer import Doc2Vector, TFIDF
@@ -39,7 +39,7 @@ class CriticalTextClassifier():
     Labels critical text as 1 and non critical news as -1
     """
 
-    def __init__(self, vectorizer="word2vec", nu=0.1):
+    def __init__(self, vectorizer="word2vec", C=100):
         # Use Doc2Vector as default vectorizer
         if(vectorizer == "word2vec"):
             logging.info("Loading word2vec model from binary file")
@@ -48,14 +48,14 @@ class CriticalTextClassifier():
             self.vectorizer = TFIDF()
             self.vectorizer.load_idf_values()
 
-        self.classifier = OneClassSVM(nu=nu)
+        self.classifier = SVC(C=C)
 
-    def fit(self, training_data):
+    def fit(self, training_data, labels):
         training_vectors = self.vectorizer.convert_corpus_to_vectors(
             training_data)
 
         logging.info("Training the classifier")
-        self.classifier.fit(training_vectors)
+        self.classifier.fit(training_vectors, labels)
 
     def predict(self, text):
         document_vector = self.vectorizer.get_vector(text)

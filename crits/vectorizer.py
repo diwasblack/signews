@@ -37,7 +37,7 @@ class Doc2Vector():
         for token in tokens:
             try:
                 word_vector = self.word2vec_model.wv[token]
-            except:
+            except Exception as e:
                 # NOTE a vector of zeros may not be the best choice
                 word_vector = np.zeros(self.vector_length)
 

@@ -1,5 +1,5 @@
 import os
-import pickle
+import json
 
 
 class CriticalTextDataset():
@@ -9,7 +9,7 @@ class CriticalTextDataset():
 
     def __init__(self):
         base_path = os.path.dirname(__file__)
-        self.dataset_path = os.path.join(base_path, "dataset.pkl")
+        self.dataset_path = os.path.join(base_path, "dataset.json")
 
         self.critical_text_path = os.path.join(
             base_path, "dataset_critical.txt")
@@ -19,17 +19,16 @@ class CriticalTextDataset():
         self.text_seperator = "\n$$end$$\n"
 
     def load_dataset(self):
-        with open(self.dataset_path, "rb") as file:
-            return pickle.load(file)
+        with open(self.dataset_path, "r") as file:
+            return json.load(file)
 
     def dump_data(self):
         """
         Dump data to txt files
         """
 
-        with open(self.dataset_path, "rb") as file:
-            texts, labels = pickle.load(file)
-
+        with open(self.dataset_path, "r") as file:
+            texts, labels = json.load(file)
             critical_text_file = open(self.critical_text_path, "w")
             non_critical_text_file = open(self.non_critical_text_path, "w")
 
@@ -45,7 +44,7 @@ class CriticalTextDataset():
         Load the data from the txt files
         """
 
-        with open(self.dataset_path, "wb") as file:
+        with open(self.dataset_path, "w") as file:
 
             critical_text_file = open(self.critical_text_path, "r")
             content = critical_text_file.read()
@@ -60,4 +59,4 @@ class CriticalTextDataset():
             labels = [1] * len(critical_texts) + [0] * len(non_critical_texts)
             dataset = critical_texts + non_critical_texts
 
-            pickle.dump((dataset, labels), file)
+            json.dump((dataset, labels), file)

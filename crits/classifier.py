@@ -1,6 +1,7 @@
 import os
 import json
 import logging
+import pickle
 
 from sklearn.svm import SVC
 
@@ -40,6 +41,9 @@ class CriticalTextClassifier():
     """
 
     def __init__(self, vectorizer="word2vec", C=100):
+        self.model_path = os.path.join(
+            os.path.dirname(__file__), "trained_classifier.pkl")
+
         # Use Doc2Vector as default vectorizer
         if(vectorizer == "word2vec"):
             logging.info("Loading word2vec model from binary file")
@@ -61,3 +65,19 @@ class CriticalTextClassifier():
         document_vector = self.vectorizer.get_vector(text)
 
         return self.classifier.predict(document_vector.reshape(1, -1))[0]
+
+    def save_model(self):
+        """
+        Save the trained model to a file
+        """
+
+        with open(self.model_path, "wb") as file:
+            pickle.dump((self.vectorizer, self.classifier), file)
+
+    def load_model(self):
+        """
+        Load a pre trained model from a file
+        """
+
+        with open(self.model_path, "rb") as file:
+            self.vectorizer, self.classifier = pickle.load(file)

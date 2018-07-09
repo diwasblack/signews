@@ -7,7 +7,7 @@ from crits.classifier import CriticalTextClassifier
 from crits.dataset import CriticalTextDataset
 
 
-def train_classifier():
+def train_test_classifier():
     # Load the critical text dataset
     criticaltext_dataset = CriticalTextDataset()
     tweets, labels = criticaltext_dataset.load_dataset()
@@ -46,4 +46,4 @@ if __name__ == "__main__":
         format='%(asctime)s %(levelname)s %(message)s', level=logging.INFO,
         filename="classifier.log")
     logger = logging.getLogger(__name__)
-    train_classifier()
+    train_test_classifier()

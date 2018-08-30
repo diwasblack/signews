@@ -20,7 +20,20 @@ def train_test_classifier():
 
     # Initialize classifier
     classifier = CriticalTextClassifier(vectorizer="tfidf")
-    classifier.fit(x_train, y_train)
+
+    C_values = [1, 50, 100, 200, 300, 400]
+    best_C = C_values[0]
+    best_score = 0
+    for c_value in C_values:
+        score = classifier.validate_model(x_train, y_train, C=c_value)
+
+        if(score > best_score):
+            best_score = score
+            best_C = c_value
+
+    logging.info("Best C={}".format(best_C))
+
+    classifier.fit(x_train, y_train, C=best_C)
 
     predicted_class_labels = [
         classifier.predict(tweet) for tweet in x_test]
@@ -43,7 +56,14 @@ def train_test_classifier():
 
 if __name__ == "__main__":
     logging.basicConfig(
-        format='%(asctime)s %(levelname)s %(message)s', level=logging.INFO,
-        filename="classifier.log")
+        format='%(asctime)s %(levelname)s %(message)s', level=logging.INFO)
+
     logger = logging.getLogger(__name__)
+
+    file_handler = logging.FileHandler("classifier.log")
+    logger.addHandler(file_handler)
+
+    console_handler = logging.StreamHandler()
+    logger.addHandler(console_handler)
+
     train_test_classifier()

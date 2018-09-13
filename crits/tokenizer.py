@@ -21,6 +21,16 @@ class TextTokenizer():
         if(self.filter_stopwords):
             self.stop_words = set(nltk.corpus.stopwords.words("english"))
 
+            # Add stop words specific to dataset
+            stem_path = os.path.join(
+                os.path.dirname(__file__),
+                "filter_words.json"
+            )
+
+            with open(stem_path, "r") as file:
+                extra_stop_words = json.load(file)
+                self.stop_words.update(extra_stop_words)
+
     def tokenize_text(self, text):
         text_data = text.lower()
         text_data = re.sub(self.url_regex, "", text_data)
@@ -44,16 +54,8 @@ class StemTokenizer(TextTokenizer):
         super().__init__(filter_stopwords=filter_words)
         self.stemmer = Stemmer()
 
-        stem_path = os.path.join(
-            os.path.dirname(__file__),
-            "filter_words.json"
-        )
-
-        with open(stem_path, "r") as file:
-            self.filter_stems = json.load(file)
-
     def tokenize_text(self, text):
         tokens = super().tokenize_text(text)
+        # Stem the tokens obtained
         stems = [self.stemmer.stem(token) for token in tokens]
-        stems = [stem for stem in stems if stem not in self.filter_stems]
         return stems

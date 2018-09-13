@@ -17,9 +17,11 @@ def visualize_data():
     vectorizer.load_idf_values()
     tsne_object = TSNE()
 
+    logging.info("Converting text to vectors")
     training_vectors = vectorizer.convert_corpus_to_vectors(
         tweets)
 
+    logging.info("Applying t-SNE")
     reduced_vectors = tsne_object.fit_transform(training_vectors)
 
     critical_tweet_vectors = []

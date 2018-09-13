@@ -31,8 +31,12 @@ def visualize_data():
         else:
             non_critical_tweet_vectors.append(vector)
 
-    plt.scatter(*list(zip(*critical_tweet_vectors)), c="r")
-    plt.scatter(*list(zip(*non_critical_tweet_vectors)), c="b")
+    fig, ax = plt.subplots()
+
+    ax.scatter(*list(zip(*critical_tweet_vectors)), c="r", label="Critical")
+    ax.scatter(*list(zip(*non_critical_tweet_vectors)), c="b", label="Non-critical")
+
+    ax.legend()
     plt.savefig("data_visualization.png")
 
 

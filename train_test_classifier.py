@@ -1,5 +1,6 @@
 import logging
 
+from sklearn import svm
 from sklearn.metrics import precision_recall_fscore_support
 from sklearn.model_selection import train_test_split
 
@@ -18,14 +19,17 @@ def train_test_classifier():
         test_size=0.33
     )
 
-    # Initialize classifier
+    # Initialize test classifier
     classifier = CriticalTextClassifier(vectorizer="tfidf")
 
     C_values = [1, 50, 100, 200, 300, 400]
     best_C = C_values[0]
     best_score = 0
     for c_value in C_values:
-        score = classifier.validate_model(x_train, y_train, C=c_value)
+        # Construct the classifier to use
+        clf = svm.SVC(C=c_value)
+
+        score = classifier.validate_model(x_train, y_train, classifier=clf)
 
         if(score > best_score):
             best_score = score
@@ -33,7 +37,9 @@ def train_test_classifier():
 
     logging.info("Best C={}".format(best_C))
 
-    classifier.fit(x_train, y_train, C=best_C)
+    # Construct the classifier with best C value
+    clf = svm.SVC(C=best_C)
+    classifier.fit(x_train, y_train, classifier=clf)
 
     predicted_class_labels = [
         classifier.predict(tweet) for tweet in x_test]

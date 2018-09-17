@@ -8,7 +8,7 @@ from crits.classifier import CriticalTextClassifier
 from crits.dataset import CriticalTextDataset
 
 
-def train_test_classifier():
+def train_test_svm():
     # Load the critical text dataset
     criticaltext_dataset = CriticalTextDataset()
     tweets, labels = criticaltext_dataset.load_dataset()
@@ -72,4 +72,4 @@ if __name__ == "__main__":
     console_handler = logging.StreamHandler()
     logger.addHandler(console_handler)
 
-    train_test_classifier()
+    train_test_svm()

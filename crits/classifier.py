@@ -58,7 +58,7 @@ class CriticalTextClassifier():
         self.classifier = None
 
     def fit(self, training_data, labels, classifier=None):
-        if(not(classifier)):
+        if(classifier is None):
             raise Exception("Classifier not provided")
 
         self.classifier = classifier
@@ -75,7 +75,7 @@ class CriticalTextClassifier():
         return self.classifier.predict(document_vector.reshape(1, -1))[0]
 
     def validate_model(self, x_train, y_train, cv=5, classifier=None):
-        if(not(classifier)):
+        if(classifier is None):
             raise Exception("Classifier not provided")
 
         self.classifier = classifier

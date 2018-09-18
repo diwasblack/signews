@@ -1,7 +1,7 @@
 import logging
 
 from sklearn.linear_model import LogisticRegression
-from sklearn.metrics import precision_recall_fscore_support
+from sklearn.metrics import precision_recall_fscore_support, accuracy_score
 from sklearn.model_selection import train_test_split
 
 from crits.classifier import CriticalTextClassifier
@@ -22,6 +22,8 @@ def train_test_logistic_regression():
     # Initialize test classifier
     classifier = CriticalTextClassifier(vectorizer="tfidf")
 
+    logging.info("Training a regularized logistic regression algorithm")
+
     C_values = [1, 50, 100, 200, 300, 400]
     best_C = C_values[0]
     best_score = 0
@@ -41,19 +43,22 @@ def train_test_logistic_regression():
     clf = LogisticRegression(C=best_C)
     classifier.fit(x_train, y_train, classifier=clf)
 
-    predicted_class_labels = [
-        classifier.predict(tweet) for tweet in x_test]
+    y_pred = [classifier.predict(tweet) for tweet in x_test]
 
-    logging.info(precision_recall_fscore_support(
-        y_test, predicted_class_labels))
+    accuracy = accuracy_score(y_test, y_pred)
+    performance_metrics = precision_recall_fscore_support(
+        y_test, y_pred)
+
+    logging.info(accuracy)
+    logging.info(performance_metrics)
 
     fn_file_path = open("false_negative.txt", "w")
     fp_file_path = open("false_positive.txt", "w")
 
     for index, value in enumerate(y_test):
-        if value == 1 and predicted_class_labels[index] == 0:
+        if value == 1 and y_pred[index] == 0:
             fn_file_path.write("{}\n$$end$$\n".format(x_test[index]))
-        if value == 0 and predicted_class_labels[index] == 1:
+        if value == 0 and y_pred[index] == 1:
             fp_file_path.write("{}\n$$end$$\n".format(x_test[index]))
 
     fn_file_path.close()

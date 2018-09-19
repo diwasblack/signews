@@ -1,4 +1,5 @@
 import logging
+import statistics
 
 from sklearn import svm
 from sklearn.metrics import precision_recall_fscore_support, accuracy_score
@@ -49,8 +50,13 @@ def train_test_svm():
     performance_metrics = precision_recall_fscore_support(
         y_test, y_pred)
 
-    logging.info(accuracy)
-    logging.info(performance_metrics)
+    precision = statistics.mean(performance_metrics[0])
+    recall = statistics.mean(performance_metrics[1])
+    fscore = statistics.mean(performance_metrics[2])
+
+    logging.info(
+        f"Accuracy:{accuracy}, Precision:{precision}, Recall:{recall}, Fscore:{fscore}"
+    )
 
     fn_file_path = open("false_negative.txt", "w")
     fp_file_path = open("false_positive.txt", "w")

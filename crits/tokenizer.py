@@ -31,6 +31,9 @@ class TextTokenizer():
                 extra_stop_words = json.load(file)
                 self.stop_words.update(extra_stop_words)
 
+        # Also discard letter from the tokens
+        self.stop_words.update(string.ascii_lowercase)
+
     def tokenize_text(self, text):
         text_data = text.lower()
         text_data = re.sub(self.url_regex, "", text_data)

@@ -9,7 +9,7 @@ from crits.classifier import CriticalTextClassifier
 from crits.dataset import CriticalTextDataset
 
 
-def train_test_logistic_regression():
+def train_test_model():
     # Load the critical text dataset
     criticaltext_dataset = CriticalTextDataset()
     tweets, labels = criticaltext_dataset.load_dataset()
@@ -83,4 +83,4 @@ if __name__ == "__main__":
     console_handler = logging.StreamHandler()
     logger.addHandler(console_handler)
 
-    train_test_logistic_regression()
+    train_test_model()

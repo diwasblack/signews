@@ -18,8 +18,11 @@ class TextTokenizer():
 
         self.filter_stopwords = filter_stopwords
 
+        # Filter single letter words from the tokens
+        self.stop_words = set(string.ascii_lowercase)
+
         if(self.filter_stopwords):
-            self.stop_words = set(nltk.corpus.stopwords.words("english"))
+            self.stop_words.update(nltk.corpus.stopwords.words("english"))
 
             # Add stop words specific to dataset
             stem_path = os.path.join(
@@ -30,9 +33,6 @@ class TextTokenizer():
             with open(stem_path, "r") as file:
                 extra_stop_words = json.load(file)
                 self.stop_words.update(extra_stop_words)
-
-        # Also discard letter from the tokens
-        self.stop_words.update(string.ascii_lowercase)
 
     def tokenize_text(self, text):
         text_data = text.lower()

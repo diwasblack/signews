@@ -5,14 +5,14 @@ from sklearn.neural_network import MLPClassifier
 from sklearn.metrics import precision_recall_fscore_support, accuracy_score
 from sklearn.model_selection import train_test_split
 
-from crits.classifier import CriticalTextClassifier
-from crits.dataset import CriticalTextDataset
+from signews.classifier import SignificantTextClassifier
+from signews.dataset import SignificantTextDataset
 
 
 def train_test_model():
-    # Load the critical text dataset
-    criticaltext_dataset = CriticalTextDataset()
-    tweets, labels = criticaltext_dataset.load_dataset()
+    # Load the dataset
+    dataset = SignificantTextDataset()
+    tweets, labels = dataset.load_dataset()
 
     x_train, x_test, y_train, y_test = train_test_split(
         tweets,
@@ -21,7 +21,7 @@ def train_test_model():
     )
 
     # Initialize test classifier
-    classifier = CriticalTextClassifier(vectorizer="tfidf")
+    classifier = SignificantTextClassifier(vectorizer="tfidf")
 
     logging.info("Training a NN")
 
@@ -58,6 +58,8 @@ def train_test_model():
     # Construct the classifier with best C value
     clf = MLPClassifier(**best_parameters)
     classifier.fit(x_train, y_train, classifier=clf)
+
+    classifier.save_model()
 
     y_pred = [classifier.predict(tweet) for tweet in x_test]
 

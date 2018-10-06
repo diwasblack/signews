@@ -1,15 +1,15 @@
 import logging
 
-from crits.classifier import CriticalTextDetector
-from crits.database import Tweet
+from signews.classifier import SignificantTextDetector
+from signews.database import Tweet
 
 
-def detect_critical_tweets():
+def detect_significant_tweets():
     """
     Label the tweets in the database using the critical word list
     """
     logging.info("Labelling tweets using critical words")
-    critical_text_detector = CriticalTextDetector()
+    critical_text_detector = SignificantTextDetector()
 
     # Obtain all tweets
     tweets = Tweet.select()
@@ -24,4 +24,4 @@ def detect_critical_tweets():
 
 
 if __name__ == "__main__":
-    detect_critical_tweets()
+    detect_significant_tweets()

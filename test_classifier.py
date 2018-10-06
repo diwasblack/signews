@@ -1,8 +1,8 @@
-from crits.classifier import CriticalTextClassifier
+from signews.classifier import SignificantTextClassifier
 
 
 def test_classifier():
-    classifier = CriticalTextClassifier(vectorizer="tfidf")
+    classifier = SignificantTextClassifier(vectorizer="tfidf")
     classifier.load_model()
 
     # Load sample text

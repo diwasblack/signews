@@ -4,13 +4,13 @@ from sklearn.manifold import TSNE
 
 import matplotlib.pyplot as plt
 
-from crits.vectorizer import TFIDF
-from crits.dataset import CriticalTextDataset
+from signews.vectorizer import TFIDF
+from signews.dataset import SignificantTextDataset
 
 
 def visualize_data():
-    criticaltext_dataset = CriticalTextDataset()
-    tweets, labels = criticaltext_dataset.load_dataset()
+    dataset = SignificantTextDataset()
+    tweets, labels = dataset.load_dataset()
 
     logging.info("Initializing vectorizer")
     vectorizer = TFIDF()
@@ -35,8 +35,8 @@ def visualize_data():
 
     fig, ax = plt.subplots()
 
-    ax.scatter(*list(zip(*critical_tweet_vectors)), c="r", label="Critical")
-    ax.scatter(*list(zip(*non_critical_tweet_vectors)), c="b", label="Non-critical")
+    ax.scatter(*list(zip(*critical_tweet_vectors)), c="r", label="Significant")
+    ax.scatter(*list(zip(*non_critical_tweet_vectors)), c="b", label="Non-significant")
 
     ax.legend()
     plt.savefig("data_visualization.png")

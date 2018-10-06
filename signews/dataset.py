@@ -2,9 +2,9 @@ import os
 import json
 
 
-class CriticalTextDataset():
+class SignificantTextDataset():
     """
-    Class to handle the dataset for the critical text
+    Class to handle the dataset for the significant news dataset
     """
 
     def __init__(self):

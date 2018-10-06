@@ -1,6 +1,5 @@
-from crits.vectorizer import TFIDF
-
-from crits.database import Tweet
+from signews.vectorizer import TFIDF
+from signews.database import Tweet
 
 
 def calculate_idf():

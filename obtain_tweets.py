@@ -1,7 +1,7 @@
 import json
 
-from crits.twitter import TwitterAPI
-from crits.database import Tweet
+from signews.twitter import TwitterAPI
+from signews.database import Tweet
 
 
 def obtain_tweets():

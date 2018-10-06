@@ -5,14 +5,14 @@ from sklearn import svm
 from sklearn.metrics import precision_recall_fscore_support, accuracy_score
 from sklearn.model_selection import train_test_split
 
-from crits.classifier import CriticalTextClassifier
-from crits.dataset import CriticalTextDataset
+from signews.classifier import SignificantTextClassifier
+from signews.dataset import SignificantTextDataset
 
 
 def train_test_model():
     # Load the critical text dataset
-    criticaltext_dataset = CriticalTextDataset()
-    tweets, labels = criticaltext_dataset.load_dataset()
+    dataset = SignificantTextDataset()
+    tweets, labels = dataset.load_dataset()
 
     x_train, x_test, y_train, y_test = train_test_split(
         tweets,
@@ -21,7 +21,7 @@ def train_test_model():
     )
 
     # Initialize test classifier
-    classifier = CriticalTextClassifier(vectorizer="tfidf")
+    classifier = SignificantTextClassifier(vectorizer="tfidf")
 
     logging.info("Training a SVM")
 

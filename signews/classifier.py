@@ -12,9 +12,9 @@ from .tokenizer import StemTokenizer
 from .vectorizer import Doc2Vector, TFIDF
 
 
-class CriticalTextDetector():
+class SignificantTextDetector():
     """
-    Class to find the critical text based on keywords
+    Class to find the significant text based on keywords
     """
 
     def __init__(self):
@@ -36,9 +36,9 @@ class CriticalTextDetector():
             return False
 
 
-class CriticalTextClassifier():
+class SignificantTextClassifier():
     """
-    Classifier for critical text
+    Classifier for detecting significant text
 
     Labels critical text as 1 and non critical news as -1
     """

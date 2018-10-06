@@ -1,7 +1,7 @@
 import unittest
 
 
-from crits.tokenizer import TextTokenizer
+from signews.tokenizer import TextTokenizer
 
 
 class TestTextTokenizer(unittest.TestCase):

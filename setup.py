@@ -1,7 +1,7 @@
 from setuptools import setup, find_packages
 
 setup(
-    name='crits',
+    name='signews',
     author='Diwas Sharma',
     author_email='diwasblack@gmail.com',
     version='0.0.dev0',

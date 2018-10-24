@@ -39,6 +39,8 @@ def visualize_data():
     ax.scatter(*list(zip(*non_critical_tweet_vectors)), c="b", label="Non-significant")
 
     ax.legend()
+    plt.xlabel("First component")
+    plt.ylabel("Second component")
     plt.savefig("data_visualization.png")
 
 

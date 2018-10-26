@@ -146,3 +146,18 @@ class TFIDF():
 
         with open(self.vocabulary_file_path, "w") as file:
             json.dump(words, file)
+
+    def get_vocab_word(self, text):
+        """
+        Return the stems that are in the vocabulary_
+        """
+
+        # Get tokens from text
+        tokens = self.tokenizer.tokenize_text(text)
+
+        filtered_tokens = [
+            x for x in tokens
+            if x in self.tf_idf.vocabulary_.keys()
+        ]
+
+        return filtered_tokens

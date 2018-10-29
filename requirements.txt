@@ -12,6 +12,7 @@ docutils==0.14
 future==0.16.0
 gensim==3.5.0
 idna==2.7
+invoke==1.2.0
 jmespath==0.9.3
 kiwisolver==1.0.1
 matplotlib==2.2.3
